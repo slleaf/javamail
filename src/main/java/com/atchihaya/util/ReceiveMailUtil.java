@@ -29,66 +29,11 @@ import java.util.Properties;
 @Component
 public class ReceiveMailUtil {
     /**
-     * 接收邮件
-     */
-    public void ReceiveMail(Inbox inbox) throws Exception {
-        //创建链接会话的配置类
-        Properties props = new Properties();
-        if (inbox.getProtocol().equals(("imap").toLowerCase())) {
-            props.setProperty("mail.store.protocol", "imap");    // 设置协议为 IMAP
-            props.setProperty("mail.imap.port", "993");          // 设置 IMAP 端口号，通常为 993
-            props.setProperty("mail.imap.host", "imap.qq.com");  // 设置 IMAP 服务器主机名
-            // 使用 SSL 连接,仅在imap协议时需要
-            props.setProperty("mail.imap.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-            props.setProperty("mail.imap.socketFactory.fallback", "false");
-        } else if (inbox.getProtocol().equals(("pop3").toLowerCase())) {
-            props.setProperty("mail.store.protocol", "pop3");        // 协议
-            props.setProperty("mail.pop3.port", "110");                // 端口
-            props.setProperty("mail.pop3.host", "pop.qq.com");    // pop3服务器
-        }
-
-        // 创建 Session 实例对象
-        Session session = Session.getInstance(props);
-        Store store = session.getStore(inbox.getProtocol());
-
-        //链接邮箱
-        store.connect(inbox.getMailDir(), inbox.getPassWord());
-
-        // 获得收件箱
-        Folder folder = store.getFolder("INBOX");
-        /* Folder.READ_ONLY：只读权限
-         * Folder.READ_WRITE：可读可写（可以修改邮件的状态）
-         */
-        folder.open(Folder.READ_WRITE);    //打开收件箱
-
-        // 由于POP3协议无法获知邮件的状态,所以getUnreadMessageCount得到的是收件箱的邮件总数
-        System.out.println("未读邮件数: " + folder.getUnreadMessageCount());
-
-        // 由于POP3协议无法获知邮件的状态,所以下面得到的结果始终都是为0
-        System.out.println("删除邮件数: " + folder.getDeletedMessageCount());
-        System.out.println("新邮件: " + folder.getNewMessageCount());
-
-        // 获得收件箱中的邮件总数
-        System.out.println("邮件总数: " + folder.getMessageCount());
-
-        // 得到收件箱中的所有邮件,并解析
-        Message[] messages = folder.getMessages();
-        parseMessage(messages);
-
-        //释放资源
-        folder.close(true);
-        store.close();
-    }
-
-    /**
      * 解析邮件
      *
      * @param messages 要解析的邮件列表
      */
     public static void parseMessage(Message... messages) throws MessagingException, IOException {
-        if (messages == null || messages.length < 1)
-            throw new MessagingException("未找到要解析的邮件!");
-
         // 解析所有邮件
         for (int i = 0, count = messages.length; i < count; i++) {
             MimeMessage msg = (MimeMessage) messages[i];
@@ -98,14 +43,10 @@ public class ReceiveMailUtil {
             System.out.println("收件人：" + getReceiveAddress(msg, null));
             System.out.println("发送时间：" + getSentDate(msg, null));
             System.out.println("是否已读：" + isSeen(msg));
-            System.out.println("邮件优先级：" + getPriority(msg));
-            System.out.println("是否需要回执：" + isReplySign(msg));
             System.out.println("邮件大小：" + msg.getSize() * 1024 + "kb");
             boolean isContainerAttachment = isContainAttachment(msg);
             System.out.println("是否包含附件：" + isContainerAttachment);
-//            if (isContainerAttachment) {
-//                saveAttachment(msg, "c:\\mailtmp\\"+msg.getSubject() + "_"); //保存附件
-//            }
+            //显示附件
             if (isContainerAttachment) {
                 List<String> attachmentFileNames = getAttachmentFileNames(msg);
                 for (String str : attachmentFileNames) {

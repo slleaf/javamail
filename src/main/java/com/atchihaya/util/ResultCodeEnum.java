@@ -12,7 +12,8 @@ public enum ResultCodeEnum {
     NOTLOGIN(504,"notLogin"),
     USERNAME_USED(505,"userNameUsed"),
     FILE_MISSING(510,"fileMissing"),
-    INCORRECT_FILE_TYPES(511,"Incorrect file types");
+    INCORRECT_FILE_TYPES(511,"Incorrect file types"),
+    MAIL_NULL(521,"Mail is null");
 
 
     private Integer code;

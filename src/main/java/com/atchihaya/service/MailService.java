@@ -1,11 +1,13 @@
 package com.atchihaya.service;
 
+import com.atchihaya.pojo.Inbox;
 import com.atchihaya.pojo.Mail;
 import com.atchihaya.pojo.MailUser;
 import com.atchihaya.pojo.PortalVo;
 import com.atchihaya.util.Result;
 import com.baomidou.mybatisplus.extension.service.IService;
 import jakarta.mail.MessagingException;
+import jakarta.mail.NoSuchProviderException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -23,4 +25,6 @@ public interface MailService extends IService<Mail> {
     Result mailLoad(PortalVo portalVo);
 
     Result showMailDetail(Integer id);
+
+    Result receiveMail(Inbox inbox) throws MessagingException;
 }

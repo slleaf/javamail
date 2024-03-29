@@ -1,5 +1,6 @@
 package com.atchihaya.controller;
 
+import com.atchihaya.pojo.Inbox;
 import com.atchihaya.pojo.Mail;
 import com.atchihaya.pojo.MailUser;
 import com.atchihaya.pojo.PortalVo;
@@ -83,6 +84,17 @@ public class MailController {
     @PostMapping("showMailDetail")
     public Result showMailDetail(Integer id){
         Result result=mailService.showMailDetail(id);
+        return result;
+    }
+
+    /**
+     * 收件箱功能实现
+     * @param inbox
+     * @return
+     */
+    @PostMapping("receivemail")
+    public Result receiveMail(@RequestBody Inbox inbox){
+        Result result=mailService.receiveMail(inbox);
         return result;
     }
 }

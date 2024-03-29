@@ -1,9 +1,7 @@
 package com.atchihaya.service.impl;
 
 import com.alibaba.druid.util.StringUtils;
-import com.atchihaya.pojo.EmlEntry;
-import com.atchihaya.pojo.MailUser;
-import com.atchihaya.pojo.PortalVo;
+import com.atchihaya.pojo.*;
 import com.atchihaya.util.EmlBasicTest;
 import com.atchihaya.util.JwtHelper;
 import com.atchihaya.util.Result;
@@ -12,10 +10,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.atchihaya.pojo.Mail;
 import com.atchihaya.service.MailService;
 import com.atchihaya.mapper.MailMapper;
-import jakarta.mail.MessagingException;
+import jakarta.mail.*;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.logging.Logger;
 import org.mybatis.logging.LoggerFactory;
@@ -31,6 +28,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author chihaya
@@ -129,11 +127,47 @@ public class MailServiceImpl extends ServiceImpl<MailMapper, Mail>
     @Override
     public Result showMailDetail(Integer id) {
         Mail mail = mailMapper.selectById(id);
-        Map<String,Object> data=new HashMap<>();
-        data.put("mail",mail);
+        Map<String, Object> data = new HashMap<>();
+        data.put("mail", mail);
         return Result.ok(data);
     }
 
+    @Override
+    public Result receiveMail(Inbox inbox) throws MessagingException {
+        //创建链接会话的配置类
+        Properties props = new Properties();
+        if (inbox.getProtocol().equals(("imap").toLowerCase())) {
+            props.setProperty("mail.store.protocol", "imap");    // 设置协议为 IMAP
+            props.setProperty("mail.imap.port", "993");          // 设置 IMAP 端口号，通常为 993
+            props.setProperty("mail.imap.host", "imap.qq.com");  // 设置 IMAP 服务器主机名
+            // 使用 SSL 连接,仅在imap协议时需要
+            props.setProperty("mail.imap.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+            props.setProperty("mail.imap.socketFactory.fallback", "false");
+        } else if (inbox.getProtocol().equals(("pop3").toLowerCase())) {
+            props.setProperty("mail.store.protocol", "pop3");        // 协议
+            props.setProperty("mail.pop3.port", "110");                // 端口
+            props.setProperty("mail.pop3.host", "pop.qq.com");    // pop3服务器
+        }
+
+        // 创建 Session 实例对象
+        Session session = Session.getInstance(props);
+        Store store = session.getStore(inbox.getProtocol());
+
+        //链接邮箱
+        store.connect(inbox.getMailDir(), inbox.getPassWord());
+
+        // 获得收件箱
+        Folder folder = store.getFolder("INBOX");
+        /* Folder.READ_ONLY：只读权限
+         * Folder.READ_WRITE：可读可写（可以修改邮件的状态）
+         */
+        folder.open(Folder.READ_WRITE);    //打开收件箱
+        // 得到收件箱中的所有邮件,并解析
+        Message[] messages = folder.getMessages();
+        if (messages == null || messages.length < 1){
+            return Result.build(null,ResultCodeEnum.MAIL_NULL);
+        }
+    }
 
 }
 
