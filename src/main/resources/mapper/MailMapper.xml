@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atchihaya.mapper.MailMapper">
+
+    <resultMap id="BaseResultMap" type="com.atchihaya.pojo.Mail">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="mailFrom" column="mail_from" jdbcType="VARCHAR"/>
+            <result property="mailFromName" column="mail_from_name" jdbcType="VARCHAR"/>
+            <result property="mailTo" column="mail_to" jdbcType="VARCHAR"/>
+            <result property="mailToName" column="mail_to_name" jdbcType="VARCHAR"/>
+            <result property="mailCc" column="mail_cc" jdbcType="VARCHAR"/>
+            <result property="mailBcc" column="mail_bcc" jdbcType="VARCHAR"/>
+            <result property="mailSubject" column="mail_subject" jdbcType="VARCHAR"/>
+            <result property="mailText" column="mail_text" jdbcType="VARCHAR"/>
+            <result property="sentDate" column="sent_date" jdbcType="TIMESTAMP"/>
+            <result property="status" column="status" jdbcType="VARCHAR"/>
+            <result property="error" column="error" jdbcType="VARCHAR"/>
+            <result property="fileDir" column="file_dir" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,mail_from,mail_from_name,
+        mail_to,mail_to_name,mail_cc,
+        mail_bcc,mail_subject,mail_text,
+        sent_date,status,error,
+        file_dir
+    </sql>
+    <select id="selectMailPage" resultType="map">
+        SELECT id, mail_from, mail_to, mail_subject, sent_date
+        FROM mail
+        WHERE mail_from_name  = #{portalVo.username}
+    </select>
+</mapper>

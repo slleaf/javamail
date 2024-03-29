@@ -1,0 +1,51 @@
+#server配置
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+
+#连接池配置
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      url: jdbc:mysql:///javamail
+      username: root
+      password: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
+#邮箱信息的配置
+  mail:
+    host: smtp.qq.com
+    port: 465
+    username: 3438357823@qq.com
+    password: hrzclflprugvcied
+    protocol: smtps
+
+
+
+  servlet:
+    multipart:
+      enabled: true
+      max-request-size: 50MB
+      max-file-size: 40MB
+
+#mybatis-plus的配置
+mybatis-plus:
+  type-aliases-package: com.atchihaya.pojo
+  global-config:
+    db-config:
+      id-type: auto
+  configuration:
+    map-underscore-to-camel-case: true
+
+#jwt配置
+jwt:
+  token:
+    tokenExpiration: 120 #有效时间,单位分钟
+    tokenSignKey: chihaya123456  #当前程序签名秘钥 自定义
+
+file:
+  upload:
+    dir: E:\javamailFile #自定义上传文件存放路径
+    disableTypes: dll,exe #自定义禁止上传的文件类型
