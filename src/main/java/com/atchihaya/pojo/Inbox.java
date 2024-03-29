@@ -17,4 +17,6 @@ public class Inbox {
     public String protocol;//协议
     public String mailDir;//邮箱地址
     public String passWord;//授权码
+    private Integer pageNum = 1;
+    private Integer pageSize =10;
 }
