@@ -8,8 +8,6 @@ import com.atchihaya.util.EmlBasicTest;
 import com.atchihaya.util.JwtHelper;
 import com.atchihaya.util.Result;
 import com.atchihaya.util.ResultCodeEnum;
-import com.atchihaya.util.emlparserutils.helper.EMLHelper;
-import com.atchihaya.util.emlparserutils.parser.EMLContent;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
