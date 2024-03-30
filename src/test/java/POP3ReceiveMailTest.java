@@ -103,35 +103,69 @@ public class POP3ReceiveMailTest {
     public static void parseMessage(Message... messages) throws MessagingException, IOException {
         if (messages == null || messages.length < 1)
             throw new MessagingException("未找到要解析的邮件!");
+        MimeMessage msg=null;
+
 
         // 解析所有邮件
-        for (int i = 0, count = messages.length; i < count; i++) {
-            MimeMessage msg = (MimeMessage) messages[i];
-            System.out.println("------------------解析第" + msg.getMessageNumber() + "封邮件-------------------- ");
-            System.out.println("主题: " + getSubject(msg));
-            System.out.println("发件人: " + getFrom(msg));
-            System.out.println("收件人：" + getReceiveAddress(msg, null));
-            System.out.println("发送时间：" + getSentDate(msg, null));
-            System.out.println("是否已读：" + isSeen(msg));
-            System.out.println("邮件优先级：" + getPriority(msg));
-            System.out.println("是否需要回执：" + isReplySign(msg));
-            System.out.println("邮件大小：" + msg.getSize() * 1024 + "kb");
-            boolean isContainerAttachment = isContainAttachment(msg);
-            System.out.println("是否包含附件：" + isContainerAttachment);
+//        for (int i = 0, count = messages.length; i < count; i++) {
+        if (messages.length<=30) {
+            for (int i = messages.length-1; i >0; i--) {
+                msg= (MimeMessage) messages[i];
+                System.out.println("------------------解析第" + msg.getMessageNumber() + "封邮件-------------------- ");
+                System.out.println("主题: " + getSubject(msg));
+                System.out.println("发件人: " + getFrom(msg));
+                System.out.println("收件人：" + getReceiveAddress(msg, null));
+                System.out.println("发送时间：" + getSentDate(msg, null));
+                System.out.println("是否已读：" + isSeen(msg));
+                System.out.println("邮件优先级：" + getPriority(msg));
+                System.out.println("是否需要回执：" + isReplySign(msg));
+                System.out.println("邮件大小：" + msg.getSize() * 1024 + "kb");
+                boolean isContainerAttachment = isContainAttachment(msg);
+                System.out.println("是否包含附件：" + isContainerAttachment);
 //            if (isContainerAttachment) {
 //                saveAttachment(msg, "c:\\mailtmp\\"+msg.getSubject() + "_"); //保存附件
 //            }
-            if (isContainerAttachment){
-                List<String> attachmentFileNames = getAttachmentFileNames(msg);
-                for (String str:attachmentFileNames){
-                    System.out.println("附件名：  " + str);
+                if (isContainerAttachment) {
+                    List<String> attachmentFileNames = getAttachmentFileNames(msg);
+                    for (String str : attachmentFileNames) {
+                        System.out.println("附件名：  " + str);
+                    }
                 }
+                StringBuffer content = new StringBuffer(30);
+                getMailTextContent(msg, content);
+                System.out.println("邮件正文：" + content);
+                System.out.println("------------------第" + msg.getMessageNumber() + "封邮件解析结束-------------------- ");
+                System.out.println();
             }
-            StringBuffer content = new StringBuffer(30);
-            getMailTextContent(msg, content);
-            System.out.println("邮件正文：" + content);
-            System.out.println("------------------第" + msg.getMessageNumber() + "封邮件解析结束-------------------- ");
-            System.out.println();
+        }else if (messages.length>30) {
+            for (int i = messages.length-1 , count = 0; i > 0 && count < 30; i--, count++) {
+                msg= (MimeMessage) messages[i];
+                System.out.println("------------------解析第" + msg.getMessageNumber() + "封邮件-------------------- ");
+                System.out.println("主题: " + getSubject(msg));
+                System.out.println("发件人: " + getFrom(msg));
+                System.out.println("收件人：" + getReceiveAddress(msg, null));
+                System.out.println("发送时间：" + getSentDate(msg, null));
+                System.out.println("是否已读：" + isSeen(msg));
+                System.out.println("邮件优先级：" + getPriority(msg));
+                System.out.println("是否需要回执：" + isReplySign(msg));
+                System.out.println("邮件大小：" + msg.getSize() * 1024 + "kb");
+                boolean isContainerAttachment = isContainAttachment(msg);
+                System.out.println("是否包含附件：" + isContainerAttachment);
+//            if (isContainerAttachment) {
+//                saveAttachment(msg, "c:\\mailtmp\\"+msg.getSubject() + "_"); //保存附件
+//            }
+                if (isContainerAttachment) {
+                    List<String> attachmentFileNames = getAttachmentFileNames(msg);
+                    for (String str : attachmentFileNames) {
+                        System.out.println("附件名：  " + str);
+                    }
+                }
+                StringBuffer content = new StringBuffer(30);
+                getMailTextContent(msg, content);
+                System.out.println("邮件正文：" + content);
+                System.out.println("------------------第" + msg.getMessageNumber() + "封邮件解析结束-------------------- ");
+                System.out.println();
+            }
         }
     }
 
@@ -224,7 +258,7 @@ public class POP3ReceiveMailTest {
     /**
      * 判断邮件中是否包含附件
      *
-     * @param msg 邮件内容
+     * @param
      * @return 邮件中存在附件返回true，不存在返回false
      * @throws MessagingException
      * @throws IOException

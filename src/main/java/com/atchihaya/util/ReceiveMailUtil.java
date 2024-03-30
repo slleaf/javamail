@@ -9,7 +9,6 @@ package com.atchihaya.util; /**
  */
 
 
-import com.atchihaya.pojo.Inbox;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -24,7 +23,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 
 @Component
 public class ReceiveMailUtil {

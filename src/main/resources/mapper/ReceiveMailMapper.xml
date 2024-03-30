@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atchihaya.mapper.ReceiveMailMapper">
+
+    <resultMap id="BaseResultMap" type="com.atchihaya.pojo.ReceiveMail">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="subject" column="subject" jdbcType="VARCHAR"/>
+        <result property="receiveMailFrom" column="receive_mail_from" jdbcType="VARCHAR"/>
+        <result property="receiveMailTo" column="receive_mail_to" jdbcType="VARCHAR"/>
+        <result property="sentDate" column="sent_date" jdbcType="TIMESTAMP"/>
+        <result property="isSeen" column="is_seen" jdbcType="TINYINT"/>
+        <result property="size" column="size" jdbcType="INTEGER"/>
+        <result property="fileName" column="file_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,subject,receive_mail_from,
+        receive_mail_to,sent_date,is_seen,
+        size,file_name
+    </sql>
+    <delete id="deleteAll">
+        DELETE
+        FROM receive_mail
+    </delete>
+    <select id="selectAll" resultType="java.util.Map">
+        select id, subject, receive_mail_from, sent_date, is_seen
+        FROM receive_mail
+    </select>
+</mapper>

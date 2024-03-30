@@ -86,15 +86,4 @@ public class MailController {
         Result result=mailService.showMailDetail(id);
         return result;
     }
-
-    /**
-     * 收件箱功能实现
-     * @param inbox
-     * @return
-     */
-    @PostMapping("receivemail")
-    public Result receiveMail(@RequestBody Inbox inbox){
-        Result result=mailService.receiveMail(inbox);
-        return result;
-    }
 }

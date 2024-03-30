@@ -26,5 +26,4 @@ public interface MailService extends IService<Mail> {
 
     Result showMailDetail(Integer id);
 
-    Result receiveMail(Inbox inbox) throws MessagingException;
 }

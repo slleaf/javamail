@@ -1,6 +1,7 @@
 package com.atchihaya.service.impl;
 
 import com.alibaba.druid.util.StringUtils;
+import com.atchihaya.mapper.ReceiveMailMapper;
 import com.atchihaya.pojo.*;
 import com.atchihaya.util.EmlBasicTest;
 import com.atchihaya.util.JwtHelper;
@@ -132,42 +133,6 @@ public class MailServiceImpl extends ServiceImpl<MailMapper, Mail>
         return Result.ok(data);
     }
 
-    @Override
-    public Result receiveMail(Inbox inbox) throws MessagingException {
-        //创建链接会话的配置类
-        Properties props = new Properties();
-        if (inbox.getProtocol().equals(("imap").toLowerCase())) {
-            props.setProperty("mail.store.protocol", "imap");    // 设置协议为 IMAP
-            props.setProperty("mail.imap.port", "993");          // 设置 IMAP 端口号，通常为 993
-            props.setProperty("mail.imap.host", "imap.qq.com");  // 设置 IMAP 服务器主机名
-            // 使用 SSL 连接,仅在imap协议时需要
-            props.setProperty("mail.imap.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-            props.setProperty("mail.imap.socketFactory.fallback", "false");
-        } else if (inbox.getProtocol().equals(("pop3").toLowerCase())) {
-            props.setProperty("mail.store.protocol", "pop3");        // 协议
-            props.setProperty("mail.pop3.port", "110");                // 端口
-            props.setProperty("mail.pop3.host", "pop.qq.com");    // pop3服务器
-        }
-
-        // 创建 Session 实例对象
-        Session session = Session.getInstance(props);
-        Store store = session.getStore(inbox.getProtocol());
-
-        //链接邮箱
-        store.connect(inbox.getMailDir(), inbox.getPassWord());
-
-        // 获得收件箱
-        Folder folder = store.getFolder("INBOX");
-        /* Folder.READ_ONLY：只读权限
-         * Folder.READ_WRITE：可读可写（可以修改邮件的状态）
-         */
-        folder.open(Folder.READ_WRITE);    //打开收件箱
-        // 得到收件箱中的所有邮件,并解析
-        Message[] messages = folder.getMessages();
-        if (messages == null || messages.length < 1){
-            return Result.build(null,ResultCodeEnum.MAIL_NULL);
-        }
-    }
 
 }
 
