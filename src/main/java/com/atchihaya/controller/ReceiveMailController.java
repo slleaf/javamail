@@ -38,4 +38,15 @@ public class ReceiveMailController {
         Result result=receiveMail.receiveMail(inbox);
         return result;
     }
+
+    /**
+     * 根据id返回inbox详情
+     * @param id
+     * @return
+     */
+    @PostMapping("showInboxDetail")
+    public Result showInboxDetail(Integer id){
+        Result result=receiveMail.showInboxDetail(id);
+        return result;
+    }
 }

@@ -110,6 +110,9 @@ public class ReceiveMailServiceImpl extends ServiceImpl<ReceiveMailMapper, Recei
                 if (ReceiveMailUtil.isContainAttachment(msg)) {
                     List<String> filename = ReceiveMailUtil.getAttachmentFileNames(msg);
                     for (String str : filename) {
+                        if (sb.length() > 0) {
+                            sb.append(",");
+                        }
                         sb.append(str);
                     }
                     receiveMail.setFileName(sb.toString());
@@ -131,6 +134,14 @@ public class ReceiveMailServiceImpl extends ServiceImpl<ReceiveMailMapper, Recei
         Map<String, Object> pageInfoMap = new HashMap<>();
         pageInfoMap.put("pageInfo", pageInfo);
         return Result.ok(pageInfoMap);
+    }
+
+    @Override
+    public Result showInboxDetail(Integer id) {
+        ReceiveMail receiveMail=receiveMailMapper.selectById(id);
+        Map<String,Object>data=new HashMap<>();
+        data.put("mail",receiveMail);
+        return Result.ok(data);
     }
 }
 

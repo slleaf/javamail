@@ -17,5 +17,8 @@ import java.io.UnsupportedEncodingException;
 */
 public interface ReceiveMailService extends IService<ReceiveMail> {
 
+
     Result receiveMail(Inbox inbox) throws MessagingException, IOException;
+
+    Result showInboxDetail(Integer id);
 }
