@@ -17,10 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
 * @author 水律
@@ -69,60 +66,25 @@ public class ReceiveMailServiceImpl extends ServiceImpl<ReceiveMailMapper, Recei
         if (messages == null || messages.length < 1) {
             return Result.build(null, ResultCodeEnum.MAIL_NULL);
         }
-        ReceiveMail receiveMail = new ReceiveMail();
+        ReceiveMail receiveMail = null;
+        List<ReceiveMail>list=new ArrayList<>();
         int num=1;
         if (messages.length <= 30) {
             for (int i = messages.length - 1; i > 0; i--) {
-                StringBuffer sb = new StringBuffer();
-                MimeMessage msg = (MimeMessage) messages[i];
-                receiveMail.setId((long) num);
+                 receiveMail = setReceiveMail(messages, i, num);
+                list.add(receiveMail);
                 num++;
-                receiveMail.setSubject(ReceiveMailUtil.getSubject(msg));
-                receiveMail.setReceiveMailFrom(ReceiveMailUtil.getFrom(msg));
-                receiveMail.setReceiveMailTo(ReceiveMailUtil.getReceiveAddress(msg, null));
-                receiveMail.setSentDate(ReceiveMailUtil.getSentDate(msg, null));
-                receiveMail.setSeen(ReceiveMailUtil.isSeen(msg));
-                receiveMail.setSize(msg.getSize() * 1024 + "kb");
-                if (ReceiveMailUtil.isContainAttachment(msg)) {
-                    List<String> filename = ReceiveMailUtil.getAttachmentFileNames(msg);
-                    for (String str : filename) {
-                        sb.append(str);
-                    }
-                    receiveMail.setFileName(sb.toString());
-                }
-                StringBuffer content = new StringBuffer();
-                ReceiveMailUtil.getMailTextContent(msg, content);
-                receiveMail.setText(String.valueOf(content));
-                receiveMailMapper.insert(receiveMail);
             }
         } else if (messages.length > 30) {
             for (int i = messages.length - 1, count = 0; i > 0 && count < 30; i--, count++) {
-                StringBuffer sb = new StringBuffer();
-                MimeMessage msg = (MimeMessage) messages[i];
-                receiveMail.setId((long) num);
+                 receiveMail = setReceiveMail(messages, i, num);
+                list.add(receiveMail);
                 num++;
-                receiveMail.setSubject(ReceiveMailUtil.getSubject(msg));
-                receiveMail.setReceiveMailFrom(ReceiveMailUtil.getFrom(msg));
-                receiveMail.setReceiveMailTo(ReceiveMailUtil.getReceiveAddress(msg, null));
-                receiveMail.setSentDate(ReceiveMailUtil.getSentDate(msg, null));
-                receiveMail.setSeen(ReceiveMailUtil.isSeen(msg));
-                receiveMail.setSize(msg.getSize() * 1024 + "kb");
-                if (ReceiveMailUtil.isContainAttachment(msg)) {
-                    List<String> filename = ReceiveMailUtil.getAttachmentFileNames(msg);
-                    for (String str : filename) {
-                        if (sb.length() > 0) {
-                            sb.append(",");
-                        }
-                        sb.append(str);
-                    }
-                    receiveMail.setFileName(sb.toString());
-                }
-                StringBuffer content = new StringBuffer();
-                ReceiveMailUtil.getMailTextContent(msg, content);
-                receiveMail.setText(String.valueOf(content));
-                receiveMailMapper.insert(receiveMail);
             }
         }
+        //邮件的存入数据库
+        saveBatch(list);
+        //分页查询
         IPage<ReceiveMail>page=new Page<>(inbox.getPageNum(),inbox.getPageSize());
         receiveMailMapper.selectAll(page);
         Map<String,Object> pageInfo=new HashMap<>();
@@ -142,6 +104,39 @@ public class ReceiveMailServiceImpl extends ServiceImpl<ReceiveMailMapper, Recei
         Map<String,Object>data=new HashMap<>();
         data.put("mail",receiveMail);
         return Result.ok(data);
+    }
+
+    /**
+     * 封装邮件信息的类
+     * @param messages
+     * @param i
+     * @param num
+     * @return
+     * @throws MessagingException
+     * @throws IOException
+     */
+    public ReceiveMail setReceiveMail(Message[]messages,int i,int num) throws MessagingException, IOException {
+        ReceiveMail receiveMail=new ReceiveMail();
+        StringBuffer sb = new StringBuffer();
+        MimeMessage msg = (MimeMessage) messages[i];
+        receiveMail.setId((long) num);
+        receiveMail.setSubject(ReceiveMailUtil.getSubject(msg));
+        receiveMail.setReceiveMailFrom(ReceiveMailUtil.getFrom(msg));
+        receiveMail.setReceiveMailTo(ReceiveMailUtil.getReceiveAddress(msg, null));
+        receiveMail.setSentDate(ReceiveMailUtil.getSentDate(msg, null));
+        receiveMail.setSeen(ReceiveMailUtil.isSeen(msg));
+        receiveMail.setSize(msg.getSize() * 1024 + "kb");
+        if (ReceiveMailUtil.isContainAttachment(msg)) {
+            List<String> filename = ReceiveMailUtil.getAttachmentFileNames(msg);
+            for (String str : filename) {
+                sb.append(str);
+            }
+            receiveMail.setFileName(sb.toString());
+        }
+        StringBuffer content = new StringBuffer();
+        ReceiveMailUtil.getMailTextContent(msg, content);
+        receiveMail.setText(String.valueOf(content));
+        return receiveMail;
     }
 }
 
