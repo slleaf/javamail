@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("user")
 @MapperScan("com.atchihaya.mapper")
+@CrossOrigin
 public class UserController {
     /**
      * 登录接口

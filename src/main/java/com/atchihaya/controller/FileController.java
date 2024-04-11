@@ -3,6 +3,7 @@ package com.atchihaya.controller;
 import com.atchihaya.service.FileService;
 import com.atchihaya.util.Result;
 import com.atchihaya.util.ResultCodeEnum;
+import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +23,17 @@ import java.io.IOException;
 @RestController
 @RequestMapping("file")
 @MapperScan("com.atchihaya.mapper")
+@CrossOrigin
+@Slf4j
 public class FileController {
     @Autowired
     private FileService fileService;
+
+    /**
+     * 附件校验模块
+     * @param files
+     * @return
+     */
     @PostMapping("verification")
     public Result fileVerification(@RequestPart(value = "file",required = false) MultipartFile[] files){
         if (files == null || files.length < 2) {

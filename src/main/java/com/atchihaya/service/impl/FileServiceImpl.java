@@ -61,6 +61,7 @@ public class FileServiceImpl implements FileService {
                 in.close();
             }
         }
+        log.info("邮件分析模块被调用");
         return Result.ok(map);
     }
 }

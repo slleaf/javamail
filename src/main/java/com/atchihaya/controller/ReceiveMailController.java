@@ -6,10 +6,7 @@ import com.atchihaya.util.Result;
 import jakarta.mail.MessagingException;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -25,6 +22,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("receiveMail")
 @MapperScan("com.atchihaya.mapper")
+@CrossOrigin
 public class ReceiveMailController {
     @Autowired
     private ReceiveMailService receiveMail;

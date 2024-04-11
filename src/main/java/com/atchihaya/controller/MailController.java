@@ -30,6 +30,7 @@ import java.util.List;
 @RestController
 @RequestMapping("mail")
 @MapperScan("com.atchihaya.mapper")
+@CrossOrigin
 public class MailController {
     @Value("${file.upload.dir}")
     private String basePath;

@@ -26,6 +26,7 @@ import org.springframework.core.io.ClassPathResource;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.Key;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.Base64;
@@ -159,9 +160,15 @@ public class EmlBasicTest {
         if (addressList == null) {
             return list;
         }
+        String key="未命名";
         for (Address address : addressList) {
             Mailbox mailbox = (Mailbox) address;
-            list.add(Pair.of(mailbox.getName(), mailbox.getAddress()));
+           if ("null".equals(mailbox.getName())){
+               key="未命名";
+           }else {
+               key="邮箱地址";
+           }
+            list.add(Pair.of(key, mailbox.getAddress()));
         }
         return list;
     }
