@@ -30,6 +30,7 @@ public class FileServiceImpl implements FileService {
     private FileHashUtil fileHashUtil;
     @Override
     public Result fileVerification(MultipartFile[] files) {
+        log.info("附件分析接口被调用");
         Map<String, String> map = fileHashUtil.fileHash(files);
         return Result.ok(map);
     }

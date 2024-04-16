@@ -31,5 +31,6 @@
         SELECT id, mail_from, mail_to, mail_subject, sent_date
         FROM mail
         WHERE mail_from_name  = #{portalVo.username}
+        ORDER BY id DESC
     </select>
 </mapper>

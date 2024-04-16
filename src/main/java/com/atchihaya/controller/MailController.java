@@ -87,4 +87,15 @@ public class MailController {
         Result result=mailService.showMailDetail(id);
         return result;
     }
+
+    /**
+     * 根据id删除邮件
+     * @param id
+     * @return
+     */
+    @PostMapping("removeById")
+    public Result removeById(Integer id){
+        mailService.removeById(id);
+        return Result.ok(null);
+    }
 }

@@ -59,10 +59,10 @@ public class FileHashUtil {
         }
         Map<String,String> data=new HashMap<>();
         if (flag==true){
-            data.put("CRC32算法","文件无被篡改迹象");
+            data.put("crc32","文件无被篡改迹象");
             return data;
         }else {
-            data.put("CRC32算法","文件被篡改");
+            data.put("crc32","文件被篡改");
             return data;
         }
 
@@ -99,10 +99,10 @@ public class FileHashUtil {
         }
         Map<String,String> data=new HashMap<>();
         if (flag==true){
-            data.put("MD5算法","文件无被篡改迹象");
+            data.put("md5","文件无被篡改迹象");
             return data;
         }else {
-            data.put("MD5算法","文件被篡改");
+            data.put("md5","文件被篡改");
             return data;
         }
 
@@ -139,10 +139,10 @@ public class FileHashUtil {
         }
         Map<String,String> data=new HashMap<>();
         if (flag==true){
-            data.put("SHA_1算法","文件无被篡改迹象");
+            data.put("sha1","文件无被篡改迹象");
             return data;
         }else {
-            data.put("SHA_1算法","文件被篡改");
+            data.put("sha1","文件被篡改");
             return data;
         }
 
@@ -179,10 +179,10 @@ public class FileHashUtil {
         }
         Map<String,String> data=new HashMap<>();
         if (flag==true){
-            data.put("SHA_512算法","文件无被篡改迹象");
+            data.put("sha512","文件无被篡改迹象");
             return data;
         }else {
-            data.put("SHA_512算法","文件被篡改");
+            data.put("sha512","文件被篡改");
             return data;
         }
 

@@ -128,6 +128,8 @@ public class MailServiceImpl extends ServiceImpl<MailMapper, Mail>
     @Override
     public Result showMailDetail(Integer id) {
         Mail mail = mailMapper.selectById(id);
+        
+        log.info("查询发件记录详情接口被调用");
         Map<String, Object> data = new HashMap<>();
         data.put("mail", mail);
         return Result.ok(data);
