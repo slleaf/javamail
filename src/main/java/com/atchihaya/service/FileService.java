@@ -4,6 +4,7 @@ import com.atchihaya.util.Result;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 /**
  * ClassName: FileService
@@ -18,4 +19,6 @@ public interface FileService {
     Result fileVerification(MultipartFile[] files);
 
     Result analyzeMail(MultipartFile[] files) throws IOException;
+
+    Result dataAnalyze(MultipartFile[] files) throws IOException, ParseException;
 }

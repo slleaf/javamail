@@ -56,6 +56,7 @@ public class EmlBasicTest {
         entry.setTo(address2List(message.getTo()));
         entry.setCc(address2List(message.getCc()));
         entry.setBcc(address2List(message.getBcc()));
+        entry.setReceived(message.getHeader().getField("Received").toString());
         TimeZone timeZone = TimeZone.getTimeZone(ZoneId.of("GMT"));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         sdf.setTimeZone(timeZone);
@@ -66,6 +67,17 @@ public class EmlBasicTest {
             outputContentAndAttachments(bodyParts, entry);
             String emlParseJson = JSON.toJSONString(entry, true);
             return emlParseJson;
+    }
+    public static EmlEntry emlParseByTime(InputStream inputStream) throws IOException {
+        Message message = Message.Builder.of(inputStream).build();
+        EmlEntry entry = new EmlEntry();
+        entry.setMessage(message);
+        entry.setReceived(message.getHeader().getField("Received").toString());
+        TimeZone timeZone = TimeZone.getTimeZone(ZoneId.of("GMT+8"));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdf.setTimeZone(timeZone);
+        entry.setDateTime(sdf.format(message.getDate()));
+        return entry;
     }
 
     /**

@@ -73,5 +73,9 @@ public class EmlEntry {
      * 邮件时间
      */
     private String dateTime;
+    /**
+     * received域
+     */
+    private String received;
 
 }

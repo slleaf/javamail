@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 /**
  * ClassName: FileController
@@ -58,5 +59,15 @@ public class FileController {
             }
         }
         return fileService.analyzeMail(files);
+    }
+    /**
+     * 进行日期对比的接口
+     */
+    @PostMapping("dataAnalyze")
+    public Result dataAnalyze(@RequestPart(value = "file",required = false)MultipartFile[] files) throws IOException, ParseException {
+        if (files==null){
+            return Result.build(null, ResultCodeEnum.FILE_MISSING);
+        }
+        return fileService.dataAnalyze(files);
     }
 }
