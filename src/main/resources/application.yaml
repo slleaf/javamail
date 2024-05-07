@@ -16,11 +16,11 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
 #邮箱信息的配置
   mail:
-    host: smtp.qq.com
-    port: 465
-    username: 3438357823@qq.com
-    password: hrzclflprugvcied
-    protocol: smtps
+    host: smtp.qq.com //服务器地址，默认为qq邮箱
+    port: 465 //服务器端口号
+    username: test@qq.com //发件人的邮箱地址
+    password: 授权码，请通过邮箱服务器获得
+    protocol: smtps //发件协议
 
 
 
